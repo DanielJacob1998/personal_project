@@ -1,0 +1,6 @@
+
+[:python_version < "3.7"]
+importlib_resources==5.1.0
+
+[cli]
+rich==9.10.0
