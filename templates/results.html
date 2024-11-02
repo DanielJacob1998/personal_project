@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+</head>
+<body>
+    <h1>{{ message }}</h1>
+    <p>You recalled {{ score }} out of {{ words|length }} words correctly.</p>
+    <p>Total Score: {{ total_score }}</p>
+    <p>Words you got right: {{ correct_words | join(', ') }}</p>
+    <p>Missed words: {{ missed_words | join(', ') }}</p>
+    {% if missed_words %}
+        <a href="{{ url_for('play') }}">Try Again</a>
+    {% endif %}
+</body>
+</html>

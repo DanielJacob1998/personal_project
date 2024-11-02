@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorize the Words</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function startTimer(duration) {
+            var timer = duration, seconds;
+            var wordsDiv = document.getElementById("words");
+            var recallForm = document.getElementById("recall-form");
+
+            // Show words initially
+            wordsDiv.style.display = "block";
+            recallForm.style.display = "none"; // Hide form initially
+
+            // Start countdown
+            var countdown = setInterval(function () {
+                seconds = parseInt(timer, 10);
+                document.getElementById("timer").textContent = seconds;
+
+                if (--timer < 0) {
+                    // Timer done, hide words and show form
+                    clearInterval(countdown);
+                    wordsDiv.style.display = "none";
+                    recallForm.style.display = "block";
+                    document.getElementById("timer").textContent = ""; // Clear timer display
+                }
+            }, 1000);
+        }
+
+        // Start the timer when the page loads
+        window.onload = function () {
+            var timerDuration = {{ timer_duration }};
+            startTimer(timerDuration);
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Memorize These Words</h1>
+        <div id="words">
+            <ul>
+                {% for word in words %}
+                    <li>{{ word }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="timer" style="font-size: 1.5em; color: red;"></div> <!-- Timer display -->
+
+        <form id="recall-form" action="{{ url_for('check_answers') }}" method="post" style="display: none;">
+            {% for i in range(1, words|length + 1) %}
+                <label for="word{{ i }}">Enter word {{ i }}:</label>
+                <input type="text" id="word{{ i }}" name="word{{ i }}" required>
+            {% endfor %}
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
